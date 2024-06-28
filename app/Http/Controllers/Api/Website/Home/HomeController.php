@@ -104,9 +104,7 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         $now = Carbon::now();
-        // check on user_max  when complete db tables (whereHas)
-        // product has related have quantities
-        // products in  this main category id
+
         $offers =  Offer::where('is_active', true)
             ->where('remain_use', '>', 0)
             ->whereDate('start_at', '<=',  $now)
@@ -114,31 +112,10 @@ class HomeController extends Controller
             ->whereIn('display_platform', ['website', 'both'])
             ->orderBy('ordering', 'desc')->take(5)->get();
 
-        // $main_categories  = Category::where(['is_active' => true, 'parent_id' =>  null, 'position' => 'main'])->whereHas('mainCategoryProducts')->orderBy('ordering', 'asc')->take(5)->get();
         $main_categories  = Category::where(['is_active' => true, 'parent_id' =>  null, 'position' => 'main'])->orderBy('ordering', 'asc')->take(5)->get();
-
-        // $main_category_id  = $request->main_category_id  != null ? $request->main_category_id : (isset($main_categories) ? $main_categories[0]['id'] : null);
         $main_category_id  = $request->main_category_id  != null ? $request->main_category_id : ($main_categories->count() > 0 ? $main_categories[0]['id'] : null);
-        // dd($main_category_id);
-        // put here  parent_id  == main_category_id
         $sub_categories =  Category::where(['is_active' => true, 'parent_id' =>  $main_category_id])->orderBy('ordering', 'asc')/*->take(5)*/->get();
         $second_category = $request->second_category_id != null ? $request->second_category_id : ($sub_categories != null && $sub_categories->count() > 0 && $sub_categories->first() ? $sub_categories->first()->id : null);
-        // $second_category = $second_category ?  Category::where(['id' => $second_category, 'is_active' => true])->firstOrFail() : null;
-
-        // $third_category = $second_category ? thirdLavels($second_category) : null;
-        // if($main_category_id != null){
-        // $most_orders = Product::where(['is_active' => true, 'main_category_id' => $main_category_id])->whereHas('productDetails', function ($q) {
-        //     $q->where('quantity', '>=', 0);
-        // })->orderBy('ordering', 'asc')->take(4)->get();
-
-
-        //   $most_orders = Product::where(['is_active' => true, 'main_category_id' => $main_category_id])->whereHas('productDetails', function ($q) {
-        //         $q->where('quantity', '>=', 0);
-        //     })->join('product_details', 'products.id', '=', 'product_details.product_id')
-        //         ->orderBy('product_details.sold', 'desc')
-        //         ->groupBy('product_id')
-        //         ->select('products.*')->distinct()->take(4)->get();
-
         $category = Category::where(['is_active' => true, 'id' => $main_category_id])->firstOrFail();
         $categories  =  lastLevel($category);
 
@@ -155,20 +132,6 @@ class HomeController extends Controller
             ->groupBy('product_id')
             ->select('products.*')->distinct()->take(4)->get();
 
-
-        // $top_rated = Product::where(['is_active' => true, 'main_category_id' => $main_category_id])->whereHas('productDetails', function ($q) {
-        //     $q->where('quantity', '>=', 0);
-        // })->orderBy('ordering', 'asc')->take(4)->get();
-
-        // $top_rated = Product::where(['is_active' => true])->whereHas('productDetails', function ($q) {
-        //     $q->where('quantity', '>=', 0);
-        // })->when($main_category_id, function($q)use($main_category_id){
-        //     $q->where('main_category_id', $main_category_id);
-        // })
-        // ->join('product_details', 'products.id', '=', 'product_details.product_id')
-        // ->orderBy('product_details.rate_avg', 'desc')
-        // ->groupBy('product_id')
-        // ->select('products.*')->distinct()->take(4)->get();
 
         $top_rated = Product::where(['is_active' => true])->whereHas('categoryProducts', function ($q) use ($categories, $category) {
             if (count($categories) > 0) {
@@ -213,32 +176,6 @@ class HomeController extends Controller
         $divided_slider = SliderResource::collection(Slider::where(['is_active' => true, 'type' => 'divided',  'category_id' => $main_category_id])->whereIn('platform', ['website', 'all'])->orderBy('ordering', 'desc')->take(2)->get());
 
 
-        // }else{
-
-        // $most_orders = Product::where(['is_active' => true])->whereHas('productDetails', function ($q) {
-        //     $q->where('quantity', '>=', 0);
-        // })->orderBy('ordering', 'asc')->take(5)->get();
-
-        // $top_rated = Product::where(['is_active' => true])->whereHas('productDetails', function ($q) {
-        //     $q->where('quantity', '>=', 0);
-        // })->orderBy('ordering', 'asc')->take(5)->get();
-        // $slider = Slider::where(['is_active' => true])->orderBy('ordering', 'asc')->first();
-        // $flash_sales = FlashSale::where('is_active', true)
-        //     ->whereDate('start_at', '<=',  $now)
-        //     ->whereDate('end_at', '>=',  $now)
-        //     ->whereHas('flashSaleProducts', function ($q) {
-        //         $q->where(\DB::raw('quantity - sold'), '>=', 0);
-        //         // $q->whereHas('product', function ($q)  {
-        //         //     $q->where(['is_active' => true]);
-        //         // });
-        //     })
-        //     ->first();
-        // $new_arrivals_highlights  = Product::where(['is_active' => true])->whereHas('productDetails', function ($q)  use ($now) {
-        //     $q->where('quantity', '>=', 0);
-        //     $q->where('created_at',  $now);
-        // })->orderBy('ordering', 'asc')->take(5)->get();
-        // $divided_slider = SliderResource::collection(Slider::where(['is_active' => true])->orderBy('ordering', 'asc')->take(2)->get());
-        // }
         $firstBanner = Slider::where(['is_active' => true, 'type' => 'banner',  'category_id' => $main_category_id])->whereIn('platform', ['website', 'all'])->orderBy('ordering', 'asc')->first();
 
         if ($firstBanner != null) {

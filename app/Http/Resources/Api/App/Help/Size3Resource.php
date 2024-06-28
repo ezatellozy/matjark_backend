@@ -26,7 +26,7 @@ class Size3Resource extends JsonResource
             'id'        => $this->size_id,
             'name'      => (string) @$this->size->name,
             'tag'       => (string) @$this->size->tag,
-            'price'      => $this->price,
+            'price'      =>(float) $this->price,
             'currency' => 'SAR',
             'quantity'   => $this->quantity,
             'have_sale' =>  $this->have_sale,
