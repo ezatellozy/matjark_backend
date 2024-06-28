@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Resources\Api\Provider\Coupon;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class SimpleCouponResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
+     */
+    public function toArray($request)
+    {
+        return [
+            'id'                => (int) $this->id,
+            'image'             => (string) $this->image,
+            'code'              => (string) $this->code,
+            'start_at'          => $this->start_at ? $this->start_at->format('Y-m-d') : null,
+            'end_at'            => $this->end_at ? $this->end_at->format('Y-m-d') : null,
+            'start_time'           => $this->start_at ? $this->start_at->format('H:i') : null,
+            'end_time'             => $this->end_at ? $this->end_at->format('H:i') : null,
+            'is_active'         => (bool) $this->is_active,
+            'discount_type'     => (string) $this->discount_type,
+            'discount_amount'   => (double) $this->discount_amount,
+            'max_discount'      => (int) $this->max_discount,
+            'max_used_num'      => (int) $this->max_used_num,
+            'max_used_for_user' => (int) $this->max_used_for_user,
+            'addtion_options'   => (string) $this->addtion_options,
+            'applly_coupon_on'  => (string) $this->applly_coupon_on,
+            'created_at'        => $this->created_at ? $this->created_at->format('Y-m-d') : null,
+        ];
+    }
+}

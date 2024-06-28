@@ -1,0 +1,9 @@
+.list-orders{
+max-height: 277px;
+overflow-y: auto;
+}                                                                                                                                                        .list-orders::-webkit-scrollbar{
+    display: none;
+}
+}                                                                                                                                                        .list-orders::-moz-scrollbar{
+    display: none;
+}

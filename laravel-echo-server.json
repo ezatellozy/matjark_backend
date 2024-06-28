@@ -1,0 +1,37 @@
+{
+	"authHost": "http://davinanewstore.davinastore.com",
+	"authEndpoint": "/broadcasting/auth",
+	"clients": [
+		{
+			"appId": "a25f3b47ae9f0317",
+			"key": "b7630fd509b0a30af27ff97a12bea969"
+		}
+	],
+	"database": "redis",
+	"databaseConfig": {
+		"redis": {},
+		"sqlite": {
+			"databasePath": "/database/laravel-echo-server.sqlite"
+		}
+	},
+	"devMode": true,
+	"host": null,
+	"port": "6081",
+	"protocol": "https",
+	"socketio": {},
+	"secureOptions": 67108864,
+	"sslCertPath": "/home/davinastore/ssl/certs/davinanewstore_davinastore_com_c03d4_cad83_1676937599_c54100a00e8526603b4374e4f6a711ec.crt",
+	"sslKeyPath": "/home/davinastore/ssl/keys/c03d4_cad83_fd37ad1768e9958fb3b1edab7ff4635a.key",
+	"sslCertChainPath": "",
+	"sslPassphrase": "",
+	"subscribers": {
+		"http": true,
+		"redis": true
+	},
+	"apiOriginAllow": {
+		"allowCors": true,
+		"allowOrigin": "http://davinanewstore.davinastore.com:6081",
+		"allowMethods": "GET, POST",
+		"allowHeaders": "Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept, Authorization, X-CSRF-TOKEN, X-Socket-Id"
+	}
+}
