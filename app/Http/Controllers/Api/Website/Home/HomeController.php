@@ -19,8 +19,6 @@ use App\Models\NewsLetter;
 
 class HomeController extends Controller
 {
-
-
     public function save_news_letter(NewsLetterRequest $request)
     {
 
@@ -183,6 +181,15 @@ class HomeController extends Controller
         } else {
             $secondBanner = [];
         }
+        $locale = app()->getLocale();
+
+        $meta_data = [
+            'id'          => 1,
+            'meta_tag' => Setting::where('key', "site_meta_tag_$locale")->first()->value,
+            'meta_title' => Setting::where('key', "site_meta_title_$locale")->first()->value,
+            'meta_description' => Setting::where('key', "site_meta_description_$locale")->first()->value,
+            'meta_canonical_tag' => asset('storage/images/setting').'/'.Setting::where('key', "website_logo")->first()->value,
+        ];
 
         // dd($main_category_id);
 
@@ -190,87 +197,70 @@ class HomeController extends Controller
         $setting = Setting::all();
 
         $data = [
-            // [
-            //     'type' => 'main_banner',
-            //     'view_type'=>'main_banner',
-            //     'text' => null,
-            //     'data' => $slider != null ?  new SliderResource(Slider::where(['is_active' => true, 'type' => 'main','category_id' => $main_category_id])->whereIn('platform',['website','all'])->orderBy('ordering', 'asc')->first()) : null,
-            // ],
-            [
-                'type' => 'main_banner',
-                'view_type' => 'main_banner',
-                'text' => null,
-                'data' =>  SimpleOfferResource::collection($offers),
-            ],
-            // [
-            //     'type' => 'main_current_category',
-            //      'view_type'=>'main_current_category',
-            //     'text' => null,
-            //     'data' => $main_category_id ?new SimpleCategoryResource(Category::findOrFail($main_category_id)):null,
-            // ],
-            [
-                'type' => 'shop_by_category',
-                'view_type' => 'sub_category',
-                'text' => trans('app.messages.shop_by_category'),
-                'data' =>  SubCategoryResource::collection($sub_categories),
-            ],
-            // [
-            //     'type' => 'third_category',
-            //     'text' => null,
-            //     'data' =>    $third_category  ? SimpleCategoryResource::collection($third_category) : [],
-            // ],
-            // [
-            //     'type' => 'offers',
-            //     'view_type'=>'offers',
-            //     'text' => null,
-            //     'data' =>  SimpleOfferResource::collection($offers),
-            // ],
-
-            [
-                'type' => 'most_orders',
-                'view_type' => 'products',
-                'text' => trans('app.messages.most_orders'),
-                'data' =>  SimpleProductResource::collection($most_orders),
-            ],
-            [
-                'type' => 'banner',
-                'view_type' => 'banner',
-                'text' => null,
-                'data' => $firstBanner != null ?  new SliderResource($firstBanner) : null,
-            ],
-            [
-                'type' => 'top_rated',
-                'view_type' => 'products',
-                'text' => trans('app.messages.top_rated'),
-                'data' =>  SimpleProductResource::collection($top_rated),
-            ],
-            [
-                'type' => 'divided_slider',
-                'view_type' => 'divided_slider',
-                'text' => null,
-                'data' =>  $divided_slider,
-            ],
-            [
-                'type' => 'flash_sale',
-                'view_type' => 'flash_sale',
-                'text' => trans('app.messages.flash_sale'),
-                'data' =>  $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
-            ],
-
-
-            [
-                'type' => 'new_arrivals_highlights',
-                'view_type' => 'products',
-                'text' => trans('website.messages.new_arrivals_highlights'),
-                'data' =>  SimpleProductResource::collection($new_arrivals_highlights),
-
-            ],
-            [
-                'type' => 'banner',
-                'view_type' => 'banner',
-                'text' => null,
-                'data' => $secondBanner != null ?  new SliderResource($secondBanner) : null,
-            ],
+            'main_banner'               =>   SimpleOfferResource::collection($offers),
+            'shop_by_category'          =>   SubCategoryResource::collection($sub_categories),
+            'most_orders'               =>   SimpleProductResource::collection($most_orders),
+            'banner'                    =>   $firstBanner != null ?  new SliderResource($firstBanner) : null,
+            'top_rated'                 =>   SimpleProductResource::collection($top_rated),
+            'divided_slider'            =>   $divided_slider,
+            'flash_sale'                =>   $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
+            'new_arrivals_highlights'   =>   SimpleProductResource::collection($new_arrivals_highlights),
+            'secound_banner'            =>   $secondBanner != null ?  new SliderResource($secondBanner) : null,
+            'meta_data'                 =>   $meta_data,
+            //[
+            //  'type' => 'main_banner',
+            //  'view_type' => 'main_banner',
+            //  'text' => null,
+            //  'data' =>  SimpleOfferResource::collection($offers),
+            //],
+            //[
+            //  'type' => 'shop_by_category',
+            //  'view_type' => 'sub_category',
+            //  'text' => trans('app.messages.shop_by_category'),
+            //  'data' =>  SubCategoryResource::collection($sub_categories),
+            //],
+            //[
+            //  'type' => 'most_orders',
+            //  'view_type' => 'products',
+            //  'text' => trans('app.messages.most_orders'),
+            //  'data' =>  SimpleProductResource::collection($most_orders),
+            //],
+            //[
+            //  'type' => 'banner',
+            //  'view_type' => 'banner',
+            //  'text' => null,
+            //  'data' => $firstBanner != null ?  new SliderResource($firstBanner) : null,
+            //],
+            //[
+            //  'type' => 'top_rated',
+            //  'view_type' => 'products',
+            //  'text' => trans('app.messages.top_rated'),
+            //  'data' =>  SimpleProductResource::collection($top_rated),
+            //],
+            //[
+            //  'type' => 'divided_slider',
+            //  'view_type' => 'divided_slider',
+            //  'text' => null,
+            //  'data' =>  $divided_slider,
+            //],
+            //[
+            //  'type' => 'flash_sale',
+            //  'view_type' => 'flash_sale',
+            //  'text' => trans('app.messages.flash_sale'),
+            //  'data' =>  $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
+            //],
+            //[
+            //  'type' => 'new_arrivals_highlights',
+            //  'view_type' => 'products',
+            //  'text' => trans('website.messages.new_arrivals_highlights'),
+            //  'data' =>  SimpleProductResource::collection($new_arrivals_highlights),
+            //],
+            //[
+            //  'type' => 'banner',
+            //  'view_type' => 'banner',
+            //  'text' => null,
+            //  'data' => $secondBanner != null ?  new SliderResource($secondBanner) : null,
+            //],
 
             // [
             //     'type' => 'site_meta',
@@ -297,17 +287,9 @@ class HomeController extends Controller
 
         ];
 
-        $locale = app()->getLocale();
 
-        $meta_data = [
-            'id'          => 1,
-            'meta_tag' => Setting::where('key', "site_meta_tag_$locale")->first()->value,
-            'meta_title' => Setting::where('key', "site_meta_title_$locale")->first()->value,
-            'meta_description' => Setting::where('key', "site_meta_description_$locale")->first()->value,
-            'meta_canonical_tag' => asset('storage/images/setting').'/'.Setting::where('key', "website_logo")->first()->value,
-        ];
 
-        return response()->json(['data' => $data, 'status' => 'success', 'message' => '','meta_data' => $meta_data]);
+        return response()->json(['data' => $data, 'status' => 'success', 'message' => '']);
     }
 
 
@@ -383,50 +365,6 @@ class HomeController extends Controller
         return (CategoryResource::collection($categories))->additional(['status' => 'success', 'message' => '']);
     }
     public function getCategories(Request $request)
-    // {
-    //     $main_categories  = Category::where(['is_active' => true, 'parent_id' =>  null, 'position' => 'main'])->orderBy('ordering', 'asc')->get();
-    //     $sub_categories =  Category::where(['is_active' => true, 'parent_id' => $request->main_category_id, 'position' => 'first_sub'])->orderBy('ordering', 'asc')->get();
-    //     dd($sub_categories);
-    //     $second_category = $request->second_category_id != null ? $request->second_category_id :  $sub_categories->first();
-    //     //   dd(     $second_category);
-    //     $recommended = Product::where(['is_active' => true, 'main_category_id' => $request->main_category_id])->whereHas('categoryProducts', function ($q) use ($second_category) {
-    //         $q->whereHas('category', function ($q) use ($second_category) {
-    //             $q->where('id', $second_category);
-    //         });
-    //     })->orderBy('ordering', 'asc')->take(6)->get();
-    //     $second_category =  Category::where(['id' => $second_category, 'is_active' => true])->firstOrFail();
-    //     $third_category = thirdLavels($second_category);
-    //     // dd(   $third_category );
-    //     $data = [
-    //         [
-    //             'type' => 'slider',
-    //             'text' => null,
-    //             // 'data' =>  SliderResource::collection(Slider::where(['is_active'=> true ,'category_id' => $request->main_category_id])->inRandomOrder()->orderBy('ordering', 'asc')->take(3)->get()),
-    //         ],
-    //         [
-    //             'type' => 'main_category',
-    //             'text' => null,
-    //             'data' =>  SimpleCategoryResource::collection($main_categories),
-    //         ],
-    //         [
-    //             'type' => 'sub_category',
-    //             'text' => null,
-    //             'data' =>  SimpleCategoryResource::collection($sub_categories),
-    //         ],
-    //         [
-    //             'type' => 'third_category',
-    //             'text' => null,
-    //             'data' =>  SimpleCategoryResource::collection($third_category),
-    //         ],
-    //         [
-    //             'type' => 'recommended',
-    //             'text' => trans('app.messages.recommended'),
-    //             'data' =>  SimpleProductResource::collection($recommended),
-    //         ],
-
-    //     ];
-    //     return response()->json(['data' => $data, 'status' => 'success', 'message' => '']);
-    // }
     {
         $main_categories  = Category::where(['is_active' => true, 'parent_id' =>  null, 'position' => 'main'])->orderBy('ordering', 'asc')->get();
         $main_category_id  = $request->main_category_id  != null ? $request->main_category_id : (isset($main_categories) ? $main_categories[0]['id'] : null);
