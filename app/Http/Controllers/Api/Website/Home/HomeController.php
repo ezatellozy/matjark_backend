@@ -171,7 +171,7 @@ class HomeController extends Controller
         })->orderBy('created_at', 'desc')->take(4)->get();
 
 
-        $divided_slider = SliderResource::collection(Slider::where(['is_active' => true, 'type' => 'divided',  'category_id' => $main_category_id])->whereIn('platform', ['website', 'all'])->orderBy('ordering', 'desc')->take(2)->get());
+        $divided_sliders = SliderResource::collection(Slider::where(['is_active' => true, 'type' => 'divided',  'category_id' => $main_category_id])->whereIn('platform', ['website', 'all'])->orderBy('ordering', 'desc')->take(2)->get());
 
 
         $firstBanner = Slider::where(['is_active' => true, 'type' => 'banner',  'category_id' => $main_category_id])->whereIn('platform', ['website', 'all'])->orderBy('ordering', 'asc')->first();
@@ -202,7 +202,31 @@ class HomeController extends Controller
             'text' => trans('app.messages.most_orders'),
             'data' =>  SimpleProductResource::collection($most_orders),
         ];
+        $banner = [
+            'type' => 'banner',
+            'view_type' => 'banner',
+            'text' => null,
+            'data' => $firstBanner != null ?  new SliderResource($firstBanner) : null,
+        ];
+        $divided_slider =[
+            'type' => 'divided_slider',
+            'view_type' => 'divided_slider',
+            'text' => null,
+            'data' =>  $divided_sliders,
+        ];
 
+        flash_sale => [
+            'type' => 'flash_sale',
+            'view_type' => 'flash_sale',
+            'text' => trans('app.messages.flash_sale'),
+            'data' =>  $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
+        ];
+        new_arrivals_highlight => [
+            'type' => 'new_arrivals_highlights',
+            'view_type' => 'products',
+            'text' => trans('website.messages.new_arrivals_highlights'),
+            'data' =>  SimpleProductResource::collection($new_arrivals_highlights),
+        ];
         // dd($main_category_id);
 
 
@@ -212,11 +236,11 @@ class HomeController extends Controller
             'main_banner'               =>   SimpleOfferResource::collection($offers),
             'shop_by_category'          =>   SubCategoryResource::collection($sub_categories),
             'most_orders'               =>   $most_orders,
-            'banner'                    =>   $firstBanner != null ?  new SliderResource($firstBanner) : null,
+            'banner'                    =>   $banner,
             'top_rated'                 =>   $top_rated,
             'divided_slider'            =>   $divided_slider,
-            'flash_sale'                =>   $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
-            'new_arrivals_highlights'   =>   SimpleProductResource::collection($new_arrivals_highlights),
+            'flash_sale'                =>   $flash_sale,
+            'new_arrivals_highlights'   =>   $new_arrivals_highlight,
             'secound_banner'            =>   $secondBanner != null ?  new SliderResource($secondBanner) : null,
             'meta_data'                 =>   $meta_data,
             //[
@@ -232,36 +256,11 @@ class HomeController extends Controller
             //  'data' =>  SubCategoryResource::collection($sub_categories),
             //],
 
-            //[
-            //  'type' => 'banner',
-            //  'view_type' => 'banner',
-            //  'text' => null,
-            //  'data' => $firstBanner != null ?  new SliderResource($firstBanner) : null,
-            //],
-            //[
-            //  'type' => 'top_rated',
-            //  'view_type' => 'products',
-            //  'text' => trans('app.messages.top_rated'),
-            //  'data' =>  SimpleProductResource::collection($top_rated),
-            //],
-            //[
-            //  'type' => 'divided_slider',
-            //  'view_type' => 'divided_slider',
-            //  'text' => null,
-            //  'data' =>  $divided_slider,
-            //],
-            //[
-            //  'type' => 'flash_sale',
-            //  'view_type' => 'flash_sale',
-            //  'text' => trans('app.messages.flash_sale'),
-            //  'data' =>  $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
-            //],
-            //[
-            //  'type' => 'new_arrivals_highlights',
-            //  'view_type' => 'products',
-            //  'text' => trans('website.messages.new_arrivals_highlights'),
-            //  'data' =>  SimpleProductResource::collection($new_arrivals_highlights),
-            //],
+
+
+
+
+
             //[
             //  'type' => 'banner',
             //  'view_type' => 'banner',
