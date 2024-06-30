@@ -199,20 +199,9 @@ class HomeController extends Controller
         $data = [
             'main_banner'               =>   SimpleOfferResource::collection($offers),
             'shop_by_category'          =>   SubCategoryResource::collection($sub_categories),
-            'most_orders'               =>  [
-                                                'type' => 'most_orders',
-                                                'view_type' => 'products',
-                                                'text' => trans('app.messages.most_orders'),
-                                                'data' =>  SimpleProductResource::collection($most_orders)
-                                            ],
-            'categories'               =>   CategoryResource::collection($categories),],
+            'most_orders'               =>   SimpleProductResource::collection($most_orders),
             'banner'                    =>   $firstBanner != null ?  new SliderResource($firstBanner) : null,
-            'top_rated'                 =>  [
-                                                'type' => 'top_rated',
-                                                'view_type' => 'products',
-                                                'text' => trans('app.messages.top_rated'),
-                                                'data' =>  SimpleProductResource::collection($top_rated),
-                                            ],
+            'top_rated'                 =>   SimpleProductResource::collection($top_rated),
             'divided_slider'            =>   $divided_slider,
             'flash_sale'                =>   $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
             'new_arrivals_highlights'   =>   SimpleProductResource::collection($new_arrivals_highlights),
@@ -242,7 +231,12 @@ class HomeController extends Controller
             //  'text' => null,
             //  'data' => $firstBanner != null ?  new SliderResource($firstBanner) : null,
             //],
- ,
+            //[
+            //  'type' => 'top_rated',
+            //  'view_type' => 'products',
+            //  'text' => trans('app.messages.top_rated'),
+            //  'data' =>  SimpleProductResource::collection($top_rated),
+            //],
             //[
             //  'type' => 'divided_slider',
             //  'view_type' => 'divided_slider',
