@@ -196,6 +196,12 @@ class HomeController extends Controller
             'text' => trans('app.messages.top_rated'),
             'data' =>  SimpleProductResource::collection($top_rated),
         ];
+        $most_orders = [
+            'type' => 'most_orders',
+            'view_type' => 'products',
+            'text' => trans('app.messages.most_orders'),
+            'data' =>  SimpleProductResource::collection($most_orders),
+        ];
 
         // dd($main_category_id);
 
@@ -205,7 +211,7 @@ class HomeController extends Controller
         $data = [
             'main_banner'               =>   SimpleOfferResource::collection($offers),
             'shop_by_category'          =>   SubCategoryResource::collection($sub_categories),
-            'most_orders'               =>   SimpleProductResource::collection($most_orders),
+            'most_orders'               =>   $most_orders,
             'banner'                    =>   $firstBanner != null ?  new SliderResource($firstBanner) : null,
             'top_rated'                 =>   $top_rated,
             'divided_slider'            =>   $divided_slider,
@@ -225,12 +231,7 @@ class HomeController extends Controller
             //  'text' => trans('app.messages.shop_by_category'),
             //  'data' =>  SubCategoryResource::collection($sub_categories),
             //],
-            //[
-            //  'type' => 'most_orders',
-            //  'view_type' => 'products',
-            //  'text' => trans('app.messages.most_orders'),
-            //  'data' =>  SimpleProductResource::collection($most_orders),
-            //],
+
             //[
             //  'type' => 'banner',
             //  'view_type' => 'banner',
