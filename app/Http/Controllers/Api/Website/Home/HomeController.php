@@ -240,7 +240,7 @@ class HomeController extends Controller
             'top_rated'                 =>   $top_rated,
             'divided_slider'            =>   $divided_slider,
             'flash_sale'                =>   $flash_sale,
-            'new_arrivals_highlights'   =>   $new_arrivals_highlight,
+            //'new_arrivals_highlights'   =>   $new_arrivals_highlight,
             'secound_banner'            =>   $secondBanner != null ?  new SliderResource($secondBanner) : null,
             'meta_data'                 =>   $meta_data,
             //[
