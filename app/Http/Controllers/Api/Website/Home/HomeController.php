@@ -215,13 +215,13 @@ class HomeController extends Controller
             'data' =>  $divided_sliders,
         ];
 
-        flash_sale = [
+        $flash_sale = [
             'type' => 'flash_sale',
             'view_type' => 'flash_sale',
             'text' => trans('app.messages.flash_sale'),
             'data' =>  $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
         ];
-        new_arrivals_highlight = [
+        $new_arrivals_highlight = [
             'type' => 'new_arrivals_highlights',
             'view_type' => 'products',
             'text' => trans('website.messages.new_arrivals_highlights'),
