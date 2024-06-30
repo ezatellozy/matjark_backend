@@ -190,6 +190,12 @@ class HomeController extends Controller
             'meta_description' => Setting::where('key', "site_meta_description_$locale")->first()->value,
             'meta_canonical_tag' => asset('storage/images/setting').'/'.Setting::where('key', "website_logo")->first()->value,
         ];
+        $top_rated = [
+            'type' => 'top_rated',
+            'view_type' => 'products',
+            'text' => trans('app.messages.top_rated'),
+            'data' =>  SimpleProductResource::collection($top_rated),
+        ];
 
         // dd($main_category_id);
 
@@ -201,7 +207,7 @@ class HomeController extends Controller
             'shop_by_category'          =>   SubCategoryResource::collection($sub_categories),
             'most_orders'               =>   SimpleProductResource::collection($most_orders),
             'banner'                    =>   $firstBanner != null ?  new SliderResource($firstBanner) : null,
-            'top_rated'                 =>   SimpleProductResource::collection($top_rated),
+            'top_rated'                 =>   $top_rated,
             'divided_slider'            =>   $divided_slider,
             'flash_sale'                =>   $flash_sales ? SimpleFlashSaleResource::make($flash_sales) : null,
             'new_arrivals_highlights'   =>   SimpleProductResource::collection($new_arrivals_highlights),
