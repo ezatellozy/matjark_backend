@@ -70,7 +70,7 @@ class AuthController extends Controller
             $this->sendVerifyCode($user);
             return response()->json([
                 'status' => 'success', 'data' => null, 'message' => trans('api.messages.success_sign_up'),
-                // 'dev_message' => $code 
+                // 'dev_message' => $code
             ]);
 
             // DB::commit();
@@ -163,7 +163,7 @@ class AuthController extends Controller
         $user->devices()->firstOrCreate($request->only(['device_token', 'type']));
         $token = auth('api')->login($user);
 
-        $user->profile()->update(['last_login_at' => now()]);
+
         data_set($user, 'token', $token);
         return (new UserProfileResource($user))->additional(['status' => 'success', 'message' => '']);
     }
@@ -207,7 +207,7 @@ class AuthController extends Controller
                 $user->update(['reset_code' => $code]);
                 return response()->json([
                     'status' => 'success', 'data' => null, 'message' => "تم الارسال بنجاح", 'is_active' => true,
-                    //   'dev_message' => $code 
+                    //   'dev_message' => $code
                 ]);
             } else {
                 $code = 1111;
